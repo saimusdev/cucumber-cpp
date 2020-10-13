@@ -22,8 +22,8 @@ if(TARGET GTest::GTest)
     list(APPEND CUKE_SOURCES drivers/GTestDriver.cpp)
 endif()
 
-if(TARGET Boost::unit_test_framework)
-    list(APPEND CUKE_EXTRA_PRIVATE_LIBRARIES Boost::unit_test_framework)
+if(TARGET CONAN_LIB::Boost_boost_unit_test_framework)
+    list(APPEND CUKE_EXTRA_PRIVATE_LIBRARIES CONAN_LIB::Boost_boost_unit_test_framework)
     list(APPEND CUKE_SOURCES drivers/BoostDriver.cpp)
     list(APPEND CUKE_DEP_LIBRARIES ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 endif()
@@ -82,12 +82,11 @@ foreach(TARGET
     )
     target_link_libraries(${TARGET}
         PUBLIC
-            Boost::boost
-            Boost::regex
+            CONAN_LIB::Boost_boost_regex
         PRIVATE
-            Boost::date_time
-            Boost::filesystem
-            Boost::thread
+            CONAN_LIB::Boost_boost_date_time
+            CONAN_LIB::Boost_boost_filesystem
+            CONAN_LIB::Boost_boost_thread
             ${CUKE_EXTRA_PRIVATE_LIBRARIES}
     )
     # Don't export or import symbols for statically linked libraries
@@ -105,7 +104,7 @@ endforeach()
 
 target_link_libraries(cucumber-cpp
     PRIVATE
-        Boost::program_options
+        CONAN_LIB::Boost_boost_program_options
 )
 
 include(GNUInstallDirs)
