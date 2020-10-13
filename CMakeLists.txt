@@ -124,72 +124,11 @@ else()
     find_package(Boost ${BOOST_MIN_VERSION} COMPONENTS ${CUKE_CORE_BOOST_LIBS} REQUIRED)
 endif()
 
-# Create import targets for CMake versions older than 3.5 (actually older FindBoost.cmake)
 if(Boost_USE_STATIC_LIBS)
     set(LIBRARY_TYPE STATIC)
 else()
     # Just because we don't ask for static doesn't mean we're not getting static
     set(LIBRARY_TYPE UNKNOWN)
-endif()
-if(Boost_INCLUDE_DIRS AND NOT TARGET Boost::boost)
-    add_library(Boost::boost INTERFACE IMPORTED)
-    set_target_properties(Boost::boost PROPERTIES
-        "INTERFACE_INCLUDE_DIRECTORIES" "${Boost_INCLUDE_DIRS}")
-endif()
-if(Boost_THREAD_LIBRARY AND NOT TARGET Boost::thread)
-    find_package(Threads REQUIRED)
-    add_library(Boost::thread ${LIBRARY_TYPE} IMPORTED)
-    set_target_properties(Boost::thread PROPERTIES
-        "IMPORTED_LOCATION" "${Boost_THREAD_LIBRARY}"
-        "INTERFACE_LINK_LIBRARIES" "Threads::Threads;Boost::boost"
-    )
-endif()
-if(Boost_SYSTEM_LIBRARY AND NOT TARGET Boost::system)
-    add_library(Boost::system ${LIBRARY_TYPE} IMPORTED)
-    set_target_properties(Boost::system PROPERTIES
-        "IMPORTED_LOCATION" "${Boost_SYSTEM_LIBRARY}"
-        "INTERFACE_LINK_LIBRARIES" "Boost::boost"
-    )
-    if(Boost_USE_STATIC_LIBS)
-        set_target_properties(Boost::system PROPERTIES
-            "COMPILE_DEFINITIONS" BOOST_ERROR_CODE_HEADER_ONLY=1
-        )
-    endif()
-endif()
-if(Boost_FILESYSTEM_LIBRARY AND NOT TARGET Boost::filesystem)
-    add_library(Boost::filesystem ${LIBRARY_TYPE} IMPORTED)
-    set_target_properties(Boost::filesystem PROPERTIES
-        "IMPORTED_LOCATION" "${Boost_FILESYSTEM_LIBRARY}"
-        "INTERFACE_LINK_LIBRARIES" "Boost::system;Boost::boost"
-    )
-endif()
-if(Boost_REGEX_LIBRARY AND NOT TARGET Boost::regex)
-    add_library(Boost::regex ${LIBRARY_TYPE} IMPORTED)
-    set_target_properties(Boost::regex PROPERTIES
-        "IMPORTED_LOCATION" "${Boost_REGEX_LIBRARY}"
-        "INTERFACE_LINK_LIBRARIES" "Boost::boost"
-    )
-endif()
-if(Boost_DATE_TIME_LIBRARY AND NOT TARGET Boost::date_time)
-    add_library(Boost::date_time ${LIBRARY_TYPE} IMPORTED)
-    set_target_properties(Boost::date_time PROPERTIES
-        "IMPORTED_LOCATION" "${Boost_DATE_TIME_LIBRARY}"
-        "INTERFACE_LINK_LIBRARIES" "Boost::boost"
-    )
-endif()
-if(Boost_PROGRAM_OPTIONS_LIBRARY AND NOT TARGET Boost::program_options)
-    add_library(Boost::program_options ${LIBRARY_TYPE} IMPORTED)
-    set_target_properties(Boost::program_options PROPERTIES
-        "IMPORTED_LOCATION" "${Boost_PROGRAM_OPTIONS_LIBRARY}"
-        "INTERFACE_LINK_LIBRARIES" "Boost::boost"
-    )
-endif()
-if(Boost_UNIT_TEST_FRAMEWORK_LIBRARY AND NOT TARGET Boost::unit_test_framework)
-    add_library(Boost::unit_test_framework ${LIBRARY_TYPE} IMPORTED)
-    set_target_properties(Boost::unit_test_framework PROPERTIES
-        "IMPORTED_LOCATION" "${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}"
-        "INTERFACE_LINK_LIBRARIES" "Boost::boost"
-    )
 endif()
 
 #
@@ -201,7 +140,7 @@ if(CUKE_ENABLE_GTEST)
     if(NOT GMOCK_ROOT)
         set(GMOCK_ROOT "${CMAKE_CURRENT_BINARY_DIR}/gmock")
     endif()
-    find_package(GMock REQUIRED)
+    find_package(GTest REQUIRED)
 endif()
 
 #
